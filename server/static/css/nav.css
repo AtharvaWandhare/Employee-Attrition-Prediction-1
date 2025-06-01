@@ -1,0 +1,99 @@
+#nav-section {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+}
+
+#nav-section div {
+    display: flex;
+    align-items: center;
+}
+
+#nav-section h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+}
+
+#nav-section nav {
+    margin-top: 10px;
+    margin-right: 4rem;
+}
+
+#nav-section nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    max-height: 24px;
+    height: 24px;
+}
+
+#nav-section nav a:hover {
+    text-decoration: underline;
+}
+
+#logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    #nav-section {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #nav-section div {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    #nav-section nav {
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    #nav-section nav a {
+        display: block;
+        margin: 5px 0;
+    }
+}
+
+/* Medium devices (tablets, 601px to 900px) */
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+    #nav-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 15px;
+    }
+
+    #nav-section nav {
+        margin-top: 5px;
+        margin-right: 0;
+        flex: 1;
+        text-align: right;
+    }
+
+    #nav-section nav a {
+        margin: 0 10px;
+    }
+}

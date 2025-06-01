@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights | Employee Attrition Insights</title>
+    <link rel="stylesheet" href="/static/css/util.css">
+    <link rel="stylesheet" href="/static/css/insights.css">
+    <link rel="stylesheet" href="/static/css/nav.css">
+</head>
+
+<body>
+    <section id="nav-section">
+        <div id="logo">
+            <svg width="50" fill="currentColor" class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-hjmalu"
+                focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="PsychologyIcon">
+                <path d="M13 8.57c-.79 0-1.43.64-1.43 1.43s.64 1.43 1.43 1.43 1.43-.64 1.43-1.43-.64-1.43-1.43-1.43">
+                </path>
+                <path
+                    d="M13 3C9.25 3 6.2 5.94 6.02 9.64L4.1 12.2c-.25.33-.01.8.4.8H6v3c0 1.1.9 2 2 2h1v3h7v-4.68c2.36-1.12 4-3.53 4-6.32 0-3.87-3.13-7-7-7m3 7c0 .13-.01.26-.02.39l.83.66c.08.06.1.16.05.25l-.8 1.39c-.05.09-.16.12-.24.09l-.99-.4c-.21.16-.43.29-.67.39L14 13.83c-.01.1-.1.17-.2.17h-1.6c-.1 0-.18-.07-.2-.17l-.15-1.06c-.25-.1-.47-.23-.68-.39l-.99.4c-.09.03-.2 0-.25-.09l-.8-1.39c-.05-.08-.03-.19.05-.25l.84-.66c-.01-.13-.02-.26-.02-.39s.02-.27.04-.39l-.85-.66c-.08-.06-.1-.16-.05-.26l.8-1.38c.05-.09.15-.12.24-.09l1 .4c.2-.15.43-.29.67-.39L12 6.17c.02-.1.1-.17.2-.17h1.6c.1 0 .18.07.2.17l.15 1.06c.24.1.46.23.67.39l1-.4c.09-.03.2 0 .24.09l.8 1.38c.05.09.03.2-.05.26l-.85.66c.03.12.04.25.04.39">
+                </path>
+            </svg>
+            <h1>Employee Attrition Prediction</h1>
+        </div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict</a>
+            <a href="/insights">Insights</a>
+            <a href="/about">About</a>
+        </nav>
+    </section>
+
+    <div class="flex" style="height: 100%; width: 100vw; overflow: hidden;">
+        <div class="insights-container">
+            <!-- <h1>Employee Attrition Analysis</h1>
+            <p>Explore the critical factors influencing employee attrition and gain actionable insights to improve retention
+                strategies within your organization.</p> -->
+            <div style="height: 5rem; width: 100%;"></div>
+
+            <div class="summary-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Total Employees</div>
+                    <div class="stat-value">{{ total_employees }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Employees Left</div>
+                    <div class="stat-value">{{ left_count }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Employees Stayed</div>
+                    <div class="stat-value">{{ stayed_count }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Attrition Rate</div>
+                    <div class="stat-value">{{ attrition_rate }}%</div>
+                </div>
+            </div>
+
+
+            <h2 class="section-title">Key Factors Influencing Attrition</h2>
+
+            <div class="insights-row">
+                <div class="insights-column" style="flex: 2;">
+                    <div class="chart-container">
+                        <div class="chart-title">Top Factors Affecting Attrition</div>
+                        <img class="chart-image" src="data:image/png;base64,{{ feature_importance }}"
+                            alt="Feature Importance">
+                        <div class="insight-text">
+                            <p>This chart vividly illustrates the most influential factors in predicting employee
+                                attrition.
+                                A longer bar signifies a more critical feature in determining whether an employee is
+                                likely
+                                to leave the organization.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2 class="section-title">Demographic & Departmental Analysis</h2>
+
+            <div class="insights-row">
+                <div class="insights-column">
+                    <div class="chart-container">
+                        <div class="chart-title">Attrition by Age Group</div>
+                        <img class="chart-image" src="data:image/png;base64,{{ attrition_by_age }}"
+                            alt="Attrition by Age">
+                        <div class="insight-text">
+                            <p>Our analysis reveals a higher attrition rate among younger employees, particularly those
+                                in
+                                the <strong>18-25 and 26-35</strong> age groups. This highlights a crucial need for
+                                targeted
+                                retention
+                                strategies focusing on early-career talent.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insights-column">
+                    <div class="chart-container">
+                        <div class="chart-title">Attrition by Department</div>
+                        <img class="chart-image" src="data:image/png;base64,{{ attrition_by_dept }}"
+                            alt="Attrition by Department">
+                        <div class="insight-text">
+                            <p>Significant variations in attrition levels are observed across different departments.
+                                Pinpointing these patterns is essential for allocating retention efforts effectively and
+                                addressing department-specific challenges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2 class="section-title">Job-Related Factors</h2>
+
+            <div class="insights-row">
+                <div class="insights-column">
+                    <div class="chart-container">
+                        <div class="chart-title">Attrition by Job Role</div>
+                        <img class="chart-image" src="data:image/png;base64,{{ attrition_by_jobrole }}"
+                            alt="Attrition by Job Role">
+                        <div class="insight-text">
+                            <p>Certain job roles exhibit significantly higher turnover rates. This trend may signal
+                                underlying issues such as job satisfaction, limited career advancement opportunities,
+                                or
+                                an imbalanced work-life environment specific to these positions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insights-column">
+                    <div class="chart-container">
+                        <div class="chart-title">Attrition by Overtime Status</div>
+                        <img class="chart-image" src="data:image/png;base64,{{ attrition_by_overtime }}"
+                            alt="Attrition by Overtime Status">
+                        <div class="insight-text">
+                            <p>Employees consistently working overtime demonstrate substantially higher attrition
+                                rates.
+                                This strong correlation underscores that work-life balance is a critical determinant for
+                                long-term employee retention.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2 class="section-title">Compensation Factors</h2>
+
+            <div class="insights-row">
+                <div class="insights-column">
+                    <div class="chart-container">
+                        <div class="chart-title">Attrition by Monthly Income</div>
+                        <img class="chart-image" src="data:image/png;base64,{{ attrition_by_salary }}"
+                            alt="Attrition by Salary">
+                        <div class="insight-text">
+                            <p>A clear inverse relationship exists between compensation and attrition: employees
+                                with
+                                lower monthly incomes are more prone to leaving. This insight suggests that competitive
+                                compensation is a fundamental pillar of retention, particularly for entry-level and
+                                lower-income brackets.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2 class="section-title">Strategic Recommendations to Reduce Attrition</h2>
+
+            <div class="insights-row">
+                <div class="insights-column" style="flex: 100%;">
+                    <div class="chart-container">
+                        <div class="chart-title">Actionable Insights for Retention</div>
+                        <div class="insight-text">
+                            <ol>
+                                <li><strong>Review Overtime Policies:</strong> Given the strong link between overtime
+                                    and
+                                    attrition, implement policies that better manage workload and promote a healthy
+                                    work-life balance for all employees.</li>
+                                <li><strong>Ensure Competitive Compensation:</strong> Lower-income employees are at a
+                                    higher
+                                    risk of attrition. Regularly review and adjust compensation packages to remain
+                                    competitive, especially for entry-level and critical roles.</li>
+                                <li><strong>Address Job Role Specific Issues:</strong> For roles with elevated turnover,
+                                    conduct deeper dives into potential issues such as job satisfaction, opportunities
+                                    for
+                                    growth, or workload, and develop tailored retention strategies.</li>
+                                <li><strong>Enhance Early Career Support:</strong> Since younger employees show higher
+                                    attrition, consider establishing robust mentorship programs, clearly defined career
+                                    paths, and dedicated professional development opportunities for this demographic.
+                                </li>
+                                <li><strong>Implement Department-Specific Strategies:</strong> Analyze the unique
+                                    challenges
+                                    faced by departments with higher attrition rates and develop targeted interventions
+                                    to
+                                    improve employee satisfaction and retention within those areas.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

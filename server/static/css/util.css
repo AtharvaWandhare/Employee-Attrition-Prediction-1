@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --primary-color: rgb(25, 118, 210);
+    --primary-color-hover: rgb(19, 90, 166);
+    --primary-color-hover-transparent: rgb(19, 90, 166, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    max-width: 80vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: whitesmoke;
+    color: rgba(0, 0, 0, 0.87);
+    /* border: 1px solid green; */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: rgb(0, 0, 0, 0.87);
+}
+
+h1 {
+    font-size: 34px;
+    line-height: 42px;
+    font-weight: 400;
+}
+
+h2 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 400;
+}
+
+h3 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+}
+
+p {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.separator {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+    margin: 20px 0;
+}

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict | Employee Attrition Prediction</title>
+
+    <link rel="stylesheet" href="/static/css/util.css">
+    <link rel="stylesheet" href="/static/css/predict.css">
+    <link rel="stylesheet" href="/static/css/nav.css">
+    <link rel="stylesheet" href="/static/css/loading.css">
+</head>
+
+<body>
+    <section id="nav-section">
+        <div id="logo">
+            <svg width="50" fill="currentColor" class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-hjmalu"
+                focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="PsychologyIcon">
+                <path d="M13 8.57c-.79 0-1.43.64-1.43 1.43s.64 1.43 1.43 1.43 1.43-.64 1.43-1.43-.64-1.43-1.43-1.43">
+                </path>
+                <path
+                    d="M13 3C9.25 3 6.2 5.94 6.02 9.64L4.1 12.2c-.25.33-.01.8.4.8H6v3c0 1.1.9 2 2 2h1v3h7v-4.68c2.36-1.12 4-3.53 4-6.32 0-3.87-3.13-7-7-7m3 7c0 .13-.01.26-.02.39l.83.66c.08.06.1.16.05.25l-.8 1.39c-.05.09-.16.12-.24.09l-.99-.4c-.21.16-.43.29-.67.39L14 13.83c-.01.1-.1.17-.2.17h-1.6c-.1 0-.18-.07-.2-.17l-.15-1.06c-.25-.1-.47-.23-.68-.39l-.99.4c-.09.03-.2 0-.25-.09l-.8-1.39c-.05-.08-.03-.19.05-.25l.84-.66c-.01-.13-.02-.26-.02-.39s.02-.27.04-.39l-.85-.66c-.08-.06-.1-.16-.05-.26l.8-1.38c.05-.09.15-.12.24-.09l1 .4c.2-.15.43-.29.67-.39L12 6.17c.02-.1.1-.17.2-.17h1.6c.1 0 .18.07.2.17l.15 1.06c.24.1.46.23.67.39l1-.4c.09-.03.2 0 .24.09l.8 1.38c.05.09.03.2-.05.26l-.85.66c.03.12.04.25.04.39">
+                </path>
+            </svg>
+            <h1>Employee Attrition Prediction</h1>
+        </div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict</a>
+            <a href="/insights">Insights</a>
+            <a href="/about">About</a>
+        </nav>
+    </section>
+
+    <div class="page-header">
+        <div id="header-content">
+            <h1>Enter Employee Information</h1>
+            <p>Fill in the employee details below to predict the likelihood of attrition.</p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+            <button id="reset-button" type="reset" onclick="resetFormToDefault()">
+                Reset
+            </button>
+            <button class="predict-button" onclick="showLoading()" form="attritionForm" type="submit">
+                PREDICT ATTRITION
+            </button>
+        </div>
+    </div>
+
+    <div id="main">
+        <form id="attritionForm" method="POST" action="/predict">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
+
+            <div class="row">
+                <div id="personal-info" class="form-section">
+                    <h3>Personal Information</h3>
+                    <div class="separator" style="margin: 5px 0px;"></div>
+                    <div class="form-group">
+                        <label for="Age">Age</label>
+                        <input type="number" id="Age" name="Age" value="{{ request.form.Age or '35' }}" min="18"
+                            max="70" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Gender">Gender</label>
+                        <select id="Gender" name="Gender" required>
+                            <option value="Male" {% if request.form.Gender=="Male" or not request.form.Gender
+                                %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if request.form.Gender=="Female" %}selected{% endif %}>Female
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MaritalStatus">Marital Status</label>
+                        <select id="MaritalStatus" name="MaritalStatus" required>
+                            <option value="Single" {% if request.form.MaritalStatus=="Single" %}selected{% endif %}>
+                                Single</option>
+                            <option value="Married" {% if request.form.MaritalStatus=="Married" or not
+                                request.form.MaritalStatus %}selected{% endif %}>Married</option>
+                            <option value="Divorced" {% if request.form.MaritalStatus=="Divorced" %}selected{% endif %}>
+                                Divorced</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DistanceFromHome">Distance From Home (miles)</label>
+                        <input type="number" id="DistanceFromHome" name="DistanceFromHome"
+                            value="{{ request.form.DistanceFromHome or '7' }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Over18">Over 18</label>
+                        <select id="Over18" name="Over18" required>
+                            <option value="Y" selected>Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="job-info" class="form-section">
+                    <h3>Job Information</h3>
+                    <div class="separator" style="margin: 5px 0px;"></div>
+                    <div class="form-group">
+                        <label for="JobRole">Job Role</label>
+                        <select id="JobRole" name="JobRole" required>
+                            <option value="Sales Executive" {% if request.form.JobRole=="Sales Executive" or not
+                                request.form.JobRole %}selected{% endif %}>Sales Executive</option>
+                            <option value="Research Scientist" {% if request.form.JobRole=="Research Scientist"
+                                %}selected{% endif %}>Research Scientist</option>
+                            <option value="Laboratory Technician" {% if request.form.JobRole=="Laboratory Technician"
+                                %}selected{% endif %}>Laboratory Technician</option>
+                            <option value="Manufacturing Director" {% if request.form.JobRole=="Manufacturing Director"
+                                %}selected{% endif %}>Manufacturing Director</option>
+                            <option value="Healthcare Representative" {% if
+                                request.form.JobRole=="Healthcare Representative" %}selected{% endif %}>Healthcare
+                                Representative</option>
+                            <option value="Manager" {% if request.form.JobRole=="Manager" %}selected{% endif %}>Manager
+                            </option>
+                            <option value="Sales Representative" {% if request.form.JobRole=="Sales Representative"
+                                %}selected{% endif %}>Sales Representative</option>
+                            <option value="Research Director" {% if request.form.JobRole=="Research Director"
+                                %}selected{% endif %}>Research Director</option>
+                            <option value="Human Resources" {% if request.form.JobRole=="Human Resources" %}selected{%
+                                endif %}>Human Resources</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Department">Department</label>
+                        <select id="Department" name="Department" required>
+                            <option value="Sales" {% if request.form.Department=="Sales" or not request.form.Department
+                                %}selected{% endif %}>Sales</option>
+                            <option value="Research & Development" {% if
+                                request.form.Department=="Research & Development" %}selected{% endif %}>Research &
+                                Development</option>
+                            <option value="Human Resources" {% if request.form.Department=="Human Resources"
+                                %}selected{% endif %}>Human Resources</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="JobLevel">Job Level (1-5)</label>
+                        <input type="number" id="JobLevel" name="JobLevel" value="{{ request.form.JobLevel or '2' }}"
+                            min="1" max="5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="JobInvolvement">Job Involvement (1-4)</label>
+                        <input type="number" id="JobInvolvement" name="JobInvolvement"
+                            value="{{ request.form.JobInvolvement or '3' }}" min="1" max="4" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="JobSatisfaction">Job Satisfaction (1-4)</label>
+                        <input type="number" id="JobSatisfaction" name="JobSatisfaction"
+                            value="{{ request.form.JobSatisfaction or '3' }}" min="1" max="4" required>
+                    </div>
+                </div>
+
+                <div id="compensation-info" class="form-section">
+                    <h3>Compensation & Benefits</h3>
+                    <div class="separator" style="margin: 5px 0px;"></div>
+                    <div class="form-group">
+                        <label for="MonthlyIncome">Monthly Income</label>
+                        <input type="number" id="MonthlyIncome" name="MonthlyIncome"
+                            value="{{ request.form.MonthlyIncome or '5000' }}" min="1000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DailyRate">Daily Rate</label>
+                        <input type="number" id="DailyRate" name="DailyRate"
+                            value="{{ request.form.DailyRate or '800' }}" min="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HourlyRate">Hourly Rate</label>
+                        <input type="number" id="HourlyRate" name="HourlyRate"
+                            value="{{ request.form.HourlyRate or '65' }}" min="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MonthlyRate">Monthly Rate</label>
+                        <input type="number" id="MonthlyRate" name="MonthlyRate"
+                            value="{{ request.form.MonthlyRate or '15000' }}" min="1000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PercentSalaryHike">Percent Salary Hike</label>
+                        <input type="number" id="PercentSalaryHike" name="PercentSalaryHike"
+                            value="{{ request.form.PercentSalaryHike or '15' }}" min="0" max="25" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="StockOptionLevel">Stock Option Level (0-3)</label>
+                        <input type="number" id="StockOptionLevel" name="StockOptionLevel"
+                            value="{{ request.form.StockOptionLevel or '1' }}" min="0" max="3" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+                <div id="experience-info" class="form-section">
+                    <h3>Experience & Tenure</h3>
+                    <div class="separator" style="margin: 5px 0px;"></div>
+                    <div class="form-group">
+                        <label for="YearsAtCompany">Years at Company</label>
+                        <input type="number" id="YearsAtCompany" name="YearsAtCompany"
+                            value="{{ request.form.YearsAtCompany or '5' }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TotalWorkingYears">Total Working Years</label>
+                        <input type="number" id="TotalWorkingYears" name="TotalWorkingYears"
+                            value="{{ request.form.TotalWorkingYears or '10' }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="YearsInCurrentRole">Years In Current Role</label>
+                        <input type="number" id="YearsInCurrentRole" name="YearsInCurrentRole"
+                            value="{{ request.form.YearsInCurrentRole or '3' }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="YearsSinceLastPromotion">Years Since Last Promotion</label>
+                        <input type="number" id="YearsSinceLastPromotion" name="YearsSinceLastPromotion"
+                            value="{{ request.form.YearsSinceLastPromotion or '2' }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="YearsWithCurrManager">Years With Current Manager</label>
+                        <input type="number" id="YearsWithCurrManager" name="YearsWithCurrManager"
+                            value="{{ request.form.YearsWithCurrManager or '3' }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NumCompaniesWorked">Number of Companies Worked</label>
+                        <input type="number" id="NumCompaniesWorked" name="NumCompaniesWorked"
+                            value="{{ request.form.NumCompaniesWorked or '2' }}" min="0" required>
+                    </div>
+                </div>
+
+                <div id="education-info" class="form-section">
+                    <h3>Education & Development</h3>
+                    <div class="separator" style="margin: 5px 0px;"></div>
+                    <div class="form-group">
+                        <label for="Education">Education Level (1-5)</label>
+                        <input type="number" id="Education" name="Education" value="{{ request.form.Education or '3' }}"
+                            min="1" max="5" required>
+                        <small>1=Below College, 2=College, 3=Bachelor, 4=Master, 5=Doctor</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EducationField">Education Field</label>
+                        <select id="EducationField" name="EducationField" required>
+                            <option value="Life Sciences" {% if request.form.EducationField=="Life Sciences" or not
+                                request.form.EducationField %}selected{% endif %}>Life Sciences</option>
+                            <option value="Medical" {% if request.form.EducationField=="Medical" %}selected{% endif %}>
+                                Medical</option>
+                            <option value="Marketing" {% if request.form.EducationField=="Marketing" %}selected{% endif
+                                %}>Marketing</option>
+                            <option value="Technical Degree" {% if request.form.EducationField=="Technical Degree"
+                                %}selected{% endif %}>Technical Degree</option>
+                            <option value="Human Resources" {% if request.form.EducationField=="Human Resources"
+                                %}selected{% endif %}>Human Resources</option>
+                            <option value="Other" {% if request.form.EducationField=="Other" %}selected{% endif %}>Other
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TrainingTimesLastYear">Training Times Last Year</label>
+                        <input type="number" id="TrainingTimesLastYear" name="TrainingTimesLastYear"
+                            value="{{ request.form.TrainingTimesLastYear or '2' }}" min="0" max="10" required>
+                    </div>
+                </div>
+
+                <div id="work-environment" class="form-section">
+                    <h3>Work Environment</h3>
+                    <div class="separator" style="margin: 5px 0px;"></div>
+                    <div class="form-group">
+                        <label for="BusinessTravel">Business Travel</label>
+                        <select id="BusinessTravel" name="BusinessTravel" required>
+                            <option value="Non-Travel" {% if request.form.BusinessTravel=="Non-Travel" %}selected{%
+                                endif %}>Non-Travel</option>
+                            <option value="Travel_Rarely" {% if request.form.BusinessTravel=="Travel_Rarely" or not
+                                request.form.BusinessTravel %}selected{% endif %}>Travel Rarely</option>
+                            <option value="Travel_Frequently" {% if request.form.BusinessTravel=="Travel_Frequently"
+                                %}selected{% endif %}>Travel Frequently</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="OverTime">Overtime</label>
+                        <select id="OverTime" name="OverTime" required>
+                            <option value="Yes" {% if request.form.OverTime=="Yes" %}selected{% endif %}>Yes</option>
+                            <option value="No" {% if request.form.OverTime=="No" or not request.form.OverTime
+                                %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EnvironmentSatisfaction">Environment Satisfaction (1-4)</label>
+                        <input type="number" id="EnvironmentSatisfaction" name="EnvironmentSatisfaction"
+                            value="{{ request.form.EnvironmentSatisfaction or '3' }}" min="1" max="4" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="WorkLifeBalance">Work Life Balance (1-4)</label>
+                        <input type="number" id="WorkLifeBalance" name="WorkLifeBalance"
+                            value="{{ request.form.WorkLifeBalance or '3' }}" min="1" max="4" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RelationshipSatisfaction">Relationship Satisfaction (1-4)</label>
+                        <input type="number" id="RelationshipSatisfaction" name="RelationshipSatisfaction"
+                            value="{{ request.form.RelationshipSatisfaction or '3' }}" min="1" max="4" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PerformanceRating">Performance Rating (1-4)</label>
+                        <input type="number" id="PerformanceRating" name="PerformanceRating"
+                            value="{{ request.form.PerformanceRating or '3' }}" min="1" max="4" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden fields for consistency with dataset -->
+            <input type="hidden" id="EmployeeCount" name="EmployeeCount" value="1">
+            <input type="hidden" id="StandardHours" name="StandardHours" value="80">
+            <input type="hidden" id="EmployeeNumber" name="EmployeeNumber"
+                value="{{ request.form.EmployeeNumber or '1' }}">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button id="reset-button" type="reset" onclick="resetFormToDefault()">
+                    Reset
+                </button>
+                <button class="predict-button" onclick="showLoading()" form="attritionForm" type="submit">
+                    PREDICT ATTRITION
+                </button>
+            </div>
+        </form>
+
+        <div id="result-div" class="result">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
+            <h2>Prediction Results</h2>
+            <div class="separator" style="margin: 0.5rem 0px 2rem 0px;"></div>
+            {% if result %}
+            <div class="result {% if prediction == 'Yes' %}result-yes{% else %}result-no{% endif %}">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <p>The predicted attrition for this employee is: <strong>{{ prediction }}</strong></p>
+                        {% if prediction == 'Yes' %}
+                        <p>This employee is at risk of leaving the company.</p>
+                        {% else %}
+                        <p>This employee is likely to stay with the company.</p>
+                        {% endif %}
+                    </div>
+
+                    <div style="text-align: center; min-width: 150px;">
+                        <div style="position: relative; width: 120px; height: 120px; margin: 0 auto;">
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(
+                            {% if prediction == 'Yes' %}#dc3545{% else %}#28a745{% endif %} {{ probability }}%, 
+                            #e9ecef {{ probability }}% 100%
+                            );"></div>
+                            <div
+                                style="position: absolute; top: 10px; left: 10px; width: calc(100% - 20px); height: calc(100% - 20px); border-radius: 50%; background-color: white; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 1.5em; font-weight: bold;">{{ probability }}%</span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px;"><strong>Attrition Probability</strong></p>
+                    </div>
+                </div>
+                {% else %}
+                <p style="font-size: 20px; margin: 1rem 0px;">Fill out the form and submit to see the attrition
+                    prediction results here.
+                </p>
+                <p>The prediction model analyzes various factors like job satisfaction, work environment, compensation,
+                    and
+                    career growth to determine the likelihood of an employee leaving the organization.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function resetFormToDefault() {
+            const loadingDiv = document.querySelector('.loading');
+            loadingDiv.classList.toggle('show');
+            setTimeout(() => {
+                loadingDiv.classList.toggle('show');
+                window.location.reload();
+            }, 1000);
+
+            document.getElementById("Age").value = "35";
+            document.getElementById("Gender").value = "Male";
+            document.getElementById("MaritalStatus").value = "Married";
+            document.getElementById("DistanceFromHome").value = "7";
+            document.getElementById("Over18").value = "Y";
+
+            document.getElementById("JobRole").value = "Sales Executive";
+            document.getElementById("Department").value = "Sales";
+            document.getElementById("JobLevel").value = "2";
+            document.getElementById("JobInvolvement").value = "3";
+            document.getElementById("JobSatisfaction").value = "3";
+
+            document.getElementById("MonthlyIncome").value = "5000";
+            document.getElementById("DailyRate").value = "800";
+            document.getElementById("HourlyRate").value = "65";
+            document.getElementById("MonthlyRate").value = "15000";
+            document.getElementById("PercentSalaryHike").value = "15";
+            document.getElementById("StockOptionLevel").value = "1";
+
+            document.getElementById("YearsAtCompany").value = "5";
+            document.getElementById("TotalWorkingYears").value = "10";
+            document.getElementById("YearsInCurrentRole").value = "3";
+            document.getElementById("YearsSinceLastPromotion").value = "2";
+            document.getElementById("YearsWithCurrManager").value = "3";
+            document.getElementById("NumCompaniesWorked").value = "2";
+            document.getElementById("Education").value = "3";
+            document.getElementById("EducationField").value = "Life Sciences";
+            document.getElementById("TrainingTimesLastYear").value = "2";
+
+            document.getElementById("BusinessTravel").value = "Travel_Rarely";
+            document.getElementById("OverTime").value = "No";
+            document.getElementById("EnvironmentSatisfaction").value = "3";
+            document.getElementById("WorkLifeBalance").value = "3";
+            document.getElementById("RelationshipSatisfaction").value = "3";
+            document.getElementById("PerformanceRating").value = "3";
+        }
+
+        // Optional: Reset form fields after reload if it was a post
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        function showLoading(e) {
+            e.preventDefault();
+            const form = document.getElementById('attritionForm');
+            const loadingDiv = document.querySelector('.loading');
+            setTimeout(() => {
+                loadingDiv.classList.toggle('show');
+            }, 100);
+
+            form.submit();
+        }
+    </script>
+</body>
+
+</html>
