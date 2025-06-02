@@ -66,11 +66,38 @@ def predict():
 def about():
     return render_template("pages/about.html")
 
+def generate_dynamic_feature_plot(df, feature_name, numerical_features_list, categorical_features_list):
+    """Generates a plot for a given feature against attrition."""
+    plt.figure(figsize=(10, 6))
+    if feature_name in numerical_features_list:
+        # For numerical features -> histogram with KDE
+        sns.histplot(data=df, x=feature_name, hue='Attrition', kde=True, multiple="stack", palette="Set2")
+        plt.title(f'Attrition Distribution by {feature_name}', fontsize=14)
+        plt.xlabel(feature_name, fontsize=12)
+        plt.ylabel('Count', fontsize=12)
+    elif feature_name in categorical_features_list:
+        # categorical features -> count plot
+        ax = sns.countplot(data=df, x=feature_name, hue='Attrition', palette="Set2")
+        plt.title(f'Attrition by {feature_name}', fontsize=14)
+        plt.xlabel(feature_name, fontsize=12)
+        plt.ylabel('Count', fontsize=12)
+        
+        if df[feature_name].nunique() > 5 and df[feature_name].dtype == 'object':
+            plt.xticks(rotation=45, ha='right')
+        
+        for p in ax.patches:
+            ax.annotate(f'{p.get_height()}', 
+                        (p.get_x() + p.get_width() / 2., p.get_height()),
+                        ha='center', va='center', xytext=(0, 9), 
+                        textcoords='offset points')
+    else:
+        plt.text(0.5, 0.5, f"Cannot generate plot for feature: {feature_name}. Type unknown.",
+                 horizontalalignment='center', verticalalignment='center', 
+                 transform=plt.gca().transAxes, fontsize=12, color='red')
+
 @app.route("/insights")
 def insights():
     data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/HR-Employee-Attrition.csv")
-    
-    analyzer = AttritionAnalyzer(data_path)
     
     df = pd.read_csv(data_path)
     total_employees = len(df)
@@ -83,7 +110,17 @@ def insights():
     attrition_by_salary = generate_plot_base64(generate_salary_attrition_plot, df)
     attrition_by_overtime = generate_plot_base64(generate_overtime_attrition_plot, df)
     attrition_by_jobrole = generate_plot_base64(generate_jobrole_attrition_plot, df)
-    feature_importance = generate_plot_base64(generate_feature_importance_plot, df)
+    feature_importance_plot = generate_plot_base64(generate_feature_importance_plot, df)
+
+    all_available_features = features.columns.tolist()
+    selected_feature = request.args.get('feature')
+    selected_feature_plot_data = None
+
+    if selected_feature and selected_feature in all_available_features:
+        selected_feature_plot_data = generate_plot_base64(
+            lambda df_lambda: generate_dynamic_feature_plot(df_lambda, selected_feature, numerical_features, categorical_features), 
+            df
+        )
     
     return render_template("pages/insights.html", 
                            total_employees=total_employees,
@@ -95,11 +132,10 @@ def insights():
                            attrition_by_salary=attrition_by_salary,
                            attrition_by_overtime=attrition_by_overtime,
                            attrition_by_jobrole=attrition_by_jobrole,
-                           feature_importance=feature_importance)
-
-@app.route("/static/<path:path>")
-def send_static(path):
-    return send_from_directory("static", path)
+                           feature_importance=feature_importance_plot,
+                           all_features=all_available_features,
+                           selected_feature=selected_feature,
+                           selected_feature_plot_data=selected_feature_plot_data)
 
 def generate_plot_base64(plot_function, df):
     """Generate a base64-encoded plot using the specified function."""
@@ -255,6 +291,10 @@ def generate_feature_importance_plot(df):
     plt.yticks(range(len(indices)), [X.columns[i] for i in indices])
     plt.title(f'Top {num_features_to_show} Features for Attrition Prediction', fontsize=14)
     plt.xlabel('Relative Importance', fontsize=12)
+    
+@app.route("/static/<path:path>")
+def send_static(path):
+    return send_from_directory("static", path)
 
 if __name__ == "__main__":
     app.run(debug=True)
