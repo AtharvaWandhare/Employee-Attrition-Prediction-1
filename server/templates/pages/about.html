@@ -106,24 +106,29 @@
             <pre>
 Employee-Attrition-Prediction/
 ├── server/
-│   ├── app.py                   # Main Flask application
+│   ├── app.py                   # Main Flask 
+|   |
 │   ├── data/
-│   │   └── HR-Employee-Attrition.csv # Dataset
-│   ├── insights/
-│   │   └── insights.py          # Logic for generating data insights and plots
+│   │   └── HR-Employee-Attrition.csv
+|   |
 │   ├── model/
 │   │   └── model.py             # Machine learning model training
-│   ├── predict/
-│   │   └── predict.py           # Employee Attrition Prediction logic
+|   |
 │   ├── static/                  # Static files (CSS, JavaScript, images)
 │   │   ├── css/
+│   │   │   ├── index.css
+│   │   │   ├── insights.css
+│   │   │   ├── nav.css
+│   │   │   ├── predict.css
+│   │   │   └── util.css
 │   │   └── images/
 │   ├── templates/               # HTML templates
-│   │   ├── index.html
+│   │   ├── index.html           # Home page
 │   │   └── pages/
-│   │       ├── predict.html
-│   │       ├── insights.html
-│   │       └── about.html
+│   │       ├── predict.html     # Prediction page
+│   │       ├── insights.html    # Insights page
+│   │       └── about.html       # About page (inferred)
+│   └── __pycache__/
 └── README.md
             </pre>
         </div>

@@ -43,13 +43,10 @@ Employee-Attrition-Prediction/
 │   ├── app.py                   # Main Flask 
 |   |
 │   ├── data/
-│   │   └── HR-Employee-Attrition.csv # Dataset
-│   ├── insights/
-│   │   └── insights.py          # Logic for generating data insights and plots
+│   │   └── HR-Employee-Attrition.csv
+|   |
 │   ├── model/
 │   │   └── model.py             # Machine learning model training
-│   ├── predict/
-│   │   └── predict.py           # Employee Attrition Prediction logic
 |   |
 │   ├── static/                  # Static files (CSS, JavaScript, images)
 │   │   ├── css/
@@ -62,11 +59,11 @@ Employee-Attrition-Prediction/
 │   ├── templates/               # HTML templates
 │   │   ├── index.html           # Home page
 │   │   └── pages/
-│   │       ├── predict.html     # Prediction page (or predict_fixed.html)
+│   │       ├── predict.html     # Prediction page
 │   │       ├── insights.html    # Insights page
 │   │       └── about.html       # About page (inferred)
 │   └── __pycache__/
-└── README.md                    # This file
+└── README.md
 ```
 
 ## Setup and Installation
@@ -76,29 +73,6 @@ Employee-Attrition-Prediction/
     git clone https://github.com/WandhareAtharva/Employee-Attrition-Prediction.git
     cd Employee-Attrition-Prediction
     ```
-
-2.  **Create a virtual environment (recommended):**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
-
-3.  **Install dependencies:**
-    Create a `requirements.txt` file in the root or `server` directory with the following content:
-    ````text
-    // filepath: requirements.txt
-    Flask
-    pandas
-    scikit-learn
-    numpy
-    matplotlib
-    seaborn
-    ````
-    Then install them:
-    ```bash
-    pip install -r requirements.txt 
-    ```
-    (If your `requirements.txt` is in the `server` directory, `cd server` first or adjust the path).
 
 ## Running the Application
 
@@ -111,10 +85,6 @@ Employee-Attrition-Prediction/
     You might be using either [`app.py`](server/app.py) or [`app_fixed.py`](server/app_fixed.py).
     ```bash
     python app.py
-    ```
-    or
-    ```bash
-    python app_fixed.py
     ```
 
 3.  **Open your web browser** and go to: `http://127.0.0.1:5000/`
@@ -132,5 +102,3 @@ Employee-Attrition-Prediction/
         *   Feature importance plot.
 *   **About (`/about`):** (Inferred from navigation links)
     *   Likely contains information about the project or creators.
-
-This README provides a good starting point. You can expand it with more details as your project evolves.

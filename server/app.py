@@ -1,10 +1,10 @@
-from flask import Flask, url_for, render_template, request, flash, send_from_directory, jsonify
+from flask import Flask, url_for, render_template, request, send_from_directory, jsonify
 import pandas as pd
 import sys
 import os
 import json
 import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -15,7 +15,6 @@ import base64
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from model.model import predict_attrition, pipeline, features, categorical_features, numerical_features
-from insights.insights import AttritionAnalyzer
 
 app = Flask(__name__)
 app.secret_key = "employee_attrition_prediction"
@@ -38,7 +37,7 @@ def predict():
                     try:
                         user_data[field] = [float(val)]
                     except ValueError:
-                        flash(f"Invalid value for {field}. Please enter a number.")
+                        # flash(f"Invalid value for {field}. Please enter a number.")
                         return render_template("pages/predict.html")
                 else:
                     user_data[field] = [val.strip()]
@@ -56,7 +55,7 @@ def predict():
 
         except Exception as e:
             print(f"Error making prediction: {e}")
-            flash(f"An error occurred: {e}")
+            # flash(f"An error occurred: {e}")
             return render_template("pages/predict.html")
 
     return render_template("pages/predict.html", result=prediction is not None, prediction=prediction, probability=probability)
