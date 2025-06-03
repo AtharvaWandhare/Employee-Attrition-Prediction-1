@@ -64,6 +64,8 @@ Employee-Attrition-Prediction/
 │   │       └── about.html       # About page (inferred)
 │   └── __pycache__/
 └── README.md
+|
+└── requirements.txt
 ```
 
 ## Setup and Installation
@@ -73,6 +75,34 @@ Employee-Attrition-Prediction/
     git clone https://github.com/WandhareAtharva/Employee-Attrition-Prediction.git
     cd Employee-Attrition-Prediction
     ```
+
+2. **Create a virtual environment** (in the project root):
+
+   On Windows:
+   ```bash
+   python -m venv venv
+   ```
+
+3. **Activate the virtual environment**:
+   - On Windows (cmd):
+     ```bash
+     venv\Scripts\activate
+     ```
+   - On Windows (bash/Git Bash):
+     ```bash
+     source venv/Scripts/activate
+     ```
+   - On macOS/Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+
+4. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+This ensures your project runs in its own isolated environment, avoiding conflicts with other Python projects or system packages.
 
 ## Running the Application
 
@@ -89,55 +119,17 @@ Employee-Attrition-Prediction/
 
 3.  **Open your web browser** and go to: `http://127.0.0.1:5000/`
 
-## Running in a Virtual Environment
-
-To keep dependencies isolated, it is recommended to use a Python virtual environment for this project.
-
-### Steps:
-
-1. **Create a virtual environment** (in the project root):
-
-   On Windows:
-   ```bash
-   python -m venv venv
-   ```
-
-2. **Activate the virtual environment**:
-   - On Windows (cmd):
-     ```bash
-     venv\Scripts\activate
-     ```
-   - On Windows (bash/Git Bash):
-     ```bash
-     source venv/Scripts/activate
-     ```
-   - On macOS/Linux:
-     ```bash
-     source venv/bin/activate
-     ```
-
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the application**:
-   ```bash
-   python server/app.py
-   ```
-
-This ensures your project runs in its own isolated environment, avoiding conflicts with other Python projects or system packages.
 
 ## Pages
 
 *   **Home (`/`):** [server/templates/index.html](server/templates/index.html)
     *   Introduction to the application with links to predict attrition and view insights.
-*   **Predict (`/predict`):** [server/templates/pages/predict.html](server/templates/pages/predict.html) or [server/templates/pages/predict_fixed.html](server/templates/pages/predict_fixed.html)
+*   **Predict (`/predict`):** [server/templates/pages/predict.html](server/templates/pages/predict.html)
     *   A form to input employee details.
     *   Submitting the form provides a prediction on whether the employee is likely to attrite.
 *   **Insights (`/insights`):** [server/templates/pages/insights.html](server/templates/pages/insights.html)
     *   Displays various visualizations and analyses related to employee attrition, such as:
         *   Attrition by department, age, salary, overtime.
         *   Feature importance plot.
-*   **About (`/about`):** (Inferred from navigation links)
-    *   Likely contains information about the project or creators.
+*   **About (`/about`):**
+    *   Contains information about the project.
