@@ -65,35 +65,6 @@ def predict():
 def about():
     return render_template("pages/about.html")
 
-def generate_dynamic_feature_plot(df, feature_name, numerical_features_list, categorical_features_list):
-    """Generates a plot for a given feature against attrition."""
-    plt.figure(figsize=(10, 6))
-    if feature_name in numerical_features_list:
-        # For numerical features -> histogram with KDE
-        sns.histplot(data=df, x=feature_name, hue='Attrition', kde=True, multiple="stack", palette="Set2")
-        plt.title(f'Attrition Distribution by {feature_name}', fontsize=14)
-        plt.xlabel(feature_name, fontsize=12)
-        plt.ylabel('Count', fontsize=12)
-    elif feature_name in categorical_features_list:
-        # categorical features -> count plot
-        ax = sns.countplot(data=df, x=feature_name, hue='Attrition', palette="Set2")
-        plt.title(f'Attrition by {feature_name}', fontsize=14)
-        plt.xlabel(feature_name, fontsize=12)
-        plt.ylabel('Count', fontsize=12)
-        
-        if df[feature_name].nunique() > 5 and df[feature_name].dtype == 'object':
-            plt.xticks(rotation=45, ha='right')
-        
-        for p in ax.patches:
-            ax.annotate(f'{p.get_height()}', 
-                        (p.get_x() + p.get_width() / 2., p.get_height()),
-                        ha='center', va='center', xytext=(0, 9), 
-                        textcoords='offset points')
-    else:
-        plt.text(0.5, 0.5, f"Cannot generate plot for feature: {feature_name}. Type unknown.",
-                 horizontalalignment='center', verticalalignment='center', 
-                 transform=plt.gca().transAxes, fontsize=12, color='red')
-
 @app.route("/insights")
 def insights():
     data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/HR-Employee-Attrition.csv")
@@ -135,6 +106,35 @@ def insights():
                            all_features=all_available_features,
                            selected_feature=selected_feature,
                            selected_feature_plot_data=selected_feature_plot_data)
+
+def generate_dynamic_feature_plot(df, feature_name, numerical_features_list, categorical_features_list):
+    """Generates a plot for a given feature against attrition."""
+    plt.figure(figsize=(10, 6))
+    if feature_name in numerical_features_list:
+        # For numerical features -> histogram without KDE
+        sns.histplot(data=df, x=feature_name, hue='Attrition', kde=False, multiple="stack", palette="Set2")
+        plt.title(f'Attrition Distribution by {feature_name}', fontsize=14)
+        plt.xlabel(feature_name, fontsize=12)
+        plt.ylabel('Count', fontsize=12)
+    elif feature_name in categorical_features_list:
+        # categorical features -> count plot
+        ax = sns.countplot(data=df, x=feature_name, hue='Attrition', palette="Set2")
+        plt.title(f'Attrition by {feature_name}', fontsize=14)
+        plt.xlabel(feature_name, fontsize=12)
+        plt.ylabel('Count', fontsize=12)
+        
+        if df[feature_name].nunique() > 5 and df[feature_name].dtype == 'object':
+            plt.xticks(rotation=45, ha='right')
+        
+        for p in ax.patches:
+            ax.annotate(f'{p.get_height()}', 
+                        (p.get_x() + p.get_width() / 2., p.get_height()),
+                        ha='center', va='center', xytext=(0, 9), 
+                        textcoords='offset points')
+    else:
+        plt.text(0.5, 0.5, f"Cannot generate plot for feature: {feature_name}. Type unknown.",
+                 horizontalalignment='center', verticalalignment='center', 
+                 transform=plt.gca().transAxes, fontsize=12, color='red')
 
 def generate_plot_base64(plot_function, df):
     """Generate a base64-encoded plot using the specified function."""
