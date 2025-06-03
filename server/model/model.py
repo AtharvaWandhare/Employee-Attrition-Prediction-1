@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
@@ -32,13 +32,29 @@ model = RandomForestClassifier(n_estimators=100, random_state=42)
 pipeline = Pipeline(steps=[('preprocessor', preprocessor), ('classifier', model)])
 pipeline.fit(X_train, y_train)
 
-y_pred = pipeline.predict(X_test)
+# Hyperparameter tuning using RandomizedSearchCV
+param_dist = {
+    'classifier__n_estimators': [50, 100, 200, 300],
+    'classifier__max_depth': [None, 10, 20, 30, 40, 50],
+    'classifier__min_samples_split': [2, 5, 10],
+    'classifier__min_samples_leaf': [1, 2, 4]
+}
+random_search = RandomizedSearchCV(pipeline, param_distributions=param_dist, n_iter=10, cv=3, n_jobs=-1, scoring='accuracy', random_state=42)
+random_search.fit(X_train, y_train)
 
+print(f'Best parameters: {random_search.best_params_}')
+print(f'Best cross-validation accuracy: {random_search.best_score_}')
+
+# Use the best estimator for predictions
+y_pred = random_search.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 report = classification_report(y_test, y_pred)
 
-print(f'Accuracy: {accuracy}')
-print(f'Classification Report:\n{report}')
+print(f'Accuracy (after tuning): {accuracy}')
+print(f'Classification Report (after tuning):\n{report}')
+
+# Update pipeline to best estimator
+pipeline = random_search.best_estimator_
 
 def predict_attrition(pipeline: Pipeline, new_data: pd.DataFrame, return_probability: bool = False) -> pd.Series:
     if return_probability:
