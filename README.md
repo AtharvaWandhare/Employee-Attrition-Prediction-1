@@ -17,7 +17,7 @@ Employee attrition is a critical concern for organizations. This application lev
 
 The project uses the "HR Employee Attrition" dataset.
 *   **Dataset file:** [server/data/HR-Employee-Attrition.csv](server/data/HR-Employee-Attrition.csv)
-*   **Source:** IBM HR Analytics Employee Attrition & Performance on Kaggle.
+*   **Source:** [IBM HR Analytics Employee Attrition & Performance on Kaggle](https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset).
 
 ## Technologies Used
 
