@@ -59,28 +59,26 @@
             <h2 class="section-title">Explore Feature Insights</h2>
             <div class="insights-row">
                 <div class="insights-column" style="flex: 100%;">
-                    <div class="chart-container"
-                        style="padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+                    <div class="chart-container" style="padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
                         <div class="chart-title">Select a Feature to Analyze</div>
                         <form method="GET" action="{{ url_for('insights') }}" style="margin-bottom: 20px;">
-                            <select name="feature" id="feature-select"
-                                onchange="this.form.submit()"
+                            <select name="feature" id="feature-select" onchange="this.form.submit()"
                                 style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; min-width: 250px; font-size: 1rem;">
                                 <option value="">-- Select a Feature --</option>
                                 {% for feature in all_features %}
-                                <option value="{{ feature }}"
-                                    {% if feature == selected_feature %}selected{% endif %}>{{ feature }}</option>
+                                <option value="{{ feature }}" {% if feature==selected_feature %}selected{% endif %}>{{
+                                    feature }}</option>
                                 {% endfor %}
                             </select>
-                            </form>
+                        </form>
 
                         {% if selected_feature and selected_feature_plot_data %}
                         <div class="chart-title">Attrition Analysis for: {{ selected_feature }}</div>
-                        <img class="chart-image"
-                            src="data:image/png;base64,{{ selected_feature_plot_data }}"
+                        <img class="chart-image" src="data:image/png;base64,{{ selected_feature_plot_data }}"
                             alt="Attrition by {{ selected_feature }}">
                         <div class="insight-text">
-                            <p>This chart shows the relationship between <strong>{{ selected_feature }}</strong> and employee
+                            <p>This chart shows the relationship between <strong>{{ selected_feature }}</strong> and
+                                employee
                                 attrition.
                                 {% if selected_feature in numerical_features %}
                                 The distribution indicates how different values of {{ selected_feature }} correlate with
@@ -93,7 +91,8 @@
                         </div>
                         {% elif selected_feature %}
                         <div class="insight-text">
-                            <p>Could not generate a plot for '{{ selected_feature }}'. Please ensure it's a valid feature.
+                            <p>Could not generate a plot for '{{ selected_feature }}'. Please ensure it's a valid
+                                feature.
                             </p>
                         </div>
                         {% endif %}

@@ -89,6 +89,45 @@ Employee-Attrition-Prediction/
 
 3.  **Open your web browser** and go to: `http://127.0.0.1:5000/`
 
+## Running in a Virtual Environment
+
+To keep dependencies isolated, it is recommended to use a Python virtual environment for this project.
+
+### Steps:
+
+1. **Create a virtual environment** (in the project root):
+
+   On Windows:
+   ```bash
+   python -m venv venv
+   ```
+
+2. **Activate the virtual environment**:
+   - On Windows (cmd):
+     ```bash
+     venv\Scripts\activate
+     ```
+   - On Windows (bash/Git Bash):
+     ```bash
+     source venv/Scripts/activate
+     ```
+   - On macOS/Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run the application**:
+   ```bash
+   python server/app.py
+   ```
+
+This ensures your project runs in its own isolated environment, avoiding conflicts with other Python projects or system packages.
+
 ## Pages
 
 *   **Home (`/`):** [server/templates/index.html](server/templates/index.html)
