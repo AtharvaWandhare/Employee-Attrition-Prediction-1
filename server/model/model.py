@@ -24,7 +24,6 @@ numerical_features = features.select_dtypes(exclude=['object']).columns.tolist()
 le = LabelEncoder()
 df[target] = le.fit_transform(df[target])
 
-# Update preprocessing pipeline to include imputation and scaling
 numerical_transformer = Pipeline(steps=[
     ('imputer', SimpleImputer(strategy='median')),
     ('scaler', StandardScaler())

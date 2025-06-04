@@ -110,7 +110,7 @@ def generate_dynamic_feature_plot(df, feature_name, numerical_features_list, cat
         plt.ylabel('Count', fontsize=12)
     elif feature_name in categorical_features_list:
         # categorical features -> count plot
-        ax = sns.countplot(data=df, x=feature_name, hue='Attrition', palette="Set2")
+        graph = sns.countplot(data=df, x=feature_name, hue='Attrition', palette="Set2")
         plt.title(f'Attrition by {feature_name}', fontsize=14)
         plt.xlabel(feature_name, fontsize=12)
         plt.ylabel('Count', fontsize=12)
@@ -118,8 +118,8 @@ def generate_dynamic_feature_plot(df, feature_name, numerical_features_list, cat
         if df[feature_name].nunique() > 5 and df[feature_name].dtype == 'object':
             plt.xticks(rotation=45, ha='right')
         
-        for p in ax.patches:
-            ax.annotate(f'{p.get_height()}', 
+        for p in graph.patches:
+            graph.annotate(f'{p.get_height()}', 
                         (p.get_x() + p.get_width() / 2., p.get_height()),
                         ha='center', va='center', xytext=(0, 9), 
                         textcoords='offset points')
