@@ -62,7 +62,7 @@
                     <div class="separator" style="margin: 5px 0px;"></div>
                     <div class="form-group">
                         <label for="Age">Age</label>
-                        <input type="number" id="Age" name="Age" value="{{ request.form.Age or '35' }}" min="18"
+                        <input type="number" id="Age" name="Age" value="{{ request.form.Age or '49' }}" min="18"
                             max="70" required>
                     </div>
 
@@ -92,13 +92,6 @@
                         <label for="DistanceFromHome">Distance From Home (miles)</label>
                         <input type="number" id="DistanceFromHome" name="DistanceFromHome"
                             value="{{ request.form.DistanceFromHome or '7' }}" min="0" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Over18">Over 18</label>
-                        <select id="Over18" name="Over18" required>
-                            <option value="Y" selected>Yes</option>
-                        </select>
                     </div>
                 </div>
 
@@ -328,12 +321,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Hidden fields for consistency with dataset -->
-            <input type="hidden" id="EmployeeCount" name="EmployeeCount" value="1">
-            <input type="hidden" id="StandardHours" name="StandardHours" value="80">
-            <input type="hidden" id="EmployeeNumber" name="EmployeeNumber"
-                value="{{ request.form.EmployeeNumber or '1' }}">
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
                 <button id="reset-button" type="reset" onclick="resetFormToDefault()">
