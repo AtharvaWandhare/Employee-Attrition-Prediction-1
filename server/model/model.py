@@ -15,7 +15,6 @@ df = pd.read_csv(data_path)
 target = 'Attrition'
 features = df.drop(target, axis=1)
 
-# Drop features that are not valuable
 features = features.drop(['Over18', 'EmployeeNumber', 'EmployeeCount', 'StandardHours'], axis=1)
 
 categorical_features = features.select_dtypes(include=['object']).columns.tolist()
@@ -57,10 +56,8 @@ random_search.fit(X_train, y_train)
 print(f'Best parameters: {random_search.best_params_}')
 print(f'Best cross-validation accuracy: {random_search.best_score_}')
 
-# Evaluate the model on the test set
 y_pred = pipeline.predict(X_test)
 
-# Use the best estimator for predictions
 y_pred = random_search.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 report = classification_report(y_test, y_pred)
@@ -68,7 +65,6 @@ report = classification_report(y_test, y_pred)
 print(f'Accuracy (after tuning): {accuracy}')
 # print(f'Classification Report (after tuning):\n{report}')
 
-# Update pipeline to best estimator
 pipeline = random_search.best_estimator_
 
 def predict_attrition(pipeline: Pipeline, new_data: pd.DataFrame, return_probability: bool = False) -> pd.Series:
